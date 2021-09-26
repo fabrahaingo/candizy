@@ -5,64 +5,97 @@
             <div class="form-group row my-2">
                 <label for="neph" class="col-sm-3 col-form-label text-start">NEPH : </label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" name="neph" id="neph" placeholder="093496239512">
+                    <input class="form-control" type="text" name="neph" id="neph" placeholder="093496239512" v-model="neph">
                 </div>
             </div>
             <div class="form-group row my-2">
                 <label for="lastName" class="col-sm-3 col-form-label text-start">Nom de Naissance : </label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Dupond">
+                    <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Dupond" v-model="lastName">
                 </div>
             </div>
             <div class="form-group row my-2">
                 <label for="firstName" class="col-sm-3 col-form-label text-start">Prénom : </label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" name="firstName" id="firstName" placeholder="Jean">
+                    <input class="form-control" type="text" name="firstName" id="firstName" placeholder="Jean" v-model="firstName">
                 </div>
             </div>
             <div class="form-group row my-2">
                 <label for="email" class="col-sm-3 col-form-label text-start">Courriel : </label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="mail" name="email" id="email" placeholder="jean.dupond@gmail.com">
+                    <input class="form-control" type="mail" name="email" id="email" placeholder="jean.dupond@gmail.com" v-model="email">
                 </div>
             </div>
             <div class="form-group row my-2">
                 <label for="mobile" class="col-sm-3 col-form-label text-start">Portable : </label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="tel" name="mobile" id="mobile" placeholder="0601234567">
+                    <input class="form-control" type="tel" name="mobile" id="mobile" placeholder="0601234567" v-model="mobile">
                 </div>
             </div>
             <div class="form-group row my-2">
                 <label for="departement" class="col-sm-3 col-form-label text-start">Departement : </label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" name="departement" id="departement" placeholder="26">
+                    <input class="form-control" type="text" name="departement" id="departement" placeholder="26" v-model="departement">
                 </div>
             </div>
-            <button class="btn btn-primary mx-4" type="submit">Valider le formulaire</button>
+            <button :class="{ 'disabled' : !validateFields }" class="btn btn-primary mx-4" type="submit" @click.prevent="registerCandidat">Valider le formulaire</button>
             <button class="btn btn-primary" type="reset">Effacer le formulaire</button>
         </form>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     name: 'Register',
     data () {
         return {
             neph: '',
             firstName: '',
-            LastName: '',
+            lastName: '',
             email: '',
             mobile: '',
             departement: '',
-
+            regexNeph: /^[a-zA-Z0-9]{9,15}$/,
+            regexEmail: /[\w.-]+@[\w-]+\.\w{3,6}/,
+            regexNom: /^[a-zA-z]{2,20}$/,
+            regexTel: /^[0-9]{10}$/,
+            regexText: /[0-9a-zA-Z éèêàêôûùïî-]{5,50}$/,
+            regexVille: /[0-9a-zA-Z éèêàêôûùïî-]{2,50}$/,
+            regexCompl: /[0-9a-zA-Z éèêàêôûùïî-]{0,50}$/,
+            regexPostal: /^[0-9]{5}$/,
+            regexDepartement: /^[a-zA-Z0-9]{2}$/,
         }
     },
     created(){
-        this.$store.dispatch('getDepartement')
+        if(this.gettersDepartements != []){
+            this.$store.dispatch('getDepartement')
+        }
     },
-    computed() {
-
+    computed: {
+        validateFields() {
+            if(this.regexNeph.test(this.neph) && this.regexNom.test(this.firstName) && this.regexNom.test(this.lastName) && this.regexEmail.test(this.email)  && this.regexTel.test(this.mobile) && this.regexDepartement.test(this.departement)){
+                return true
+            } else {
+                return false
+            }
+        },
+        ...mapGetters(['gettersDepartements'])
+    },
+    methods: {
+        registerCandidat(){
+            let candidat = {
+                codeNeph: this.neph,
+                email: this.email,
+                nomNaissance: this.lastName,
+                portable: this.mobile,
+                prenom: this.firstName,
+                departement: this.departement
+            }
+            this.$store.dispatch('postNewCandidat', candidat)
+            console.log(candidat)
+        }
     }
 }
 </script>

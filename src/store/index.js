@@ -23,23 +23,37 @@ export default createStore({
             departements : []
         }
     },
+    getters: {
+        gettersDepartement (state) {
+            return state.data.departements
+        }
+    },
     mutations: {
         setDepartement(state, response){
             state.data.departements = []
-            console.log(response)
-        }
+            console.log('setDepartement :',response)
+        },
+        setInfoUser(state, response){
+            console.log('setInfoUser :', response)
+        },
     },
     actions: {
         async getDepartement({ commit }) {
-            console.log(commit)
-            console.log(this.state.api.url)
         await this.state.api.url
             .get('/public/departements')
             .then((response) => {
                 commit('setDepartement', response)
-                console.log(response)
+                console.log('getDepartement :',response)
             })
             .catch((error) => console.error(error))
+        },
+        async postNewCandidat({ commit }, candidat) {
+            await this.state.api.url
+            .post('/candidat/preinscription', candidat)
+            .then((response) => {
+                commit('setInfoUser', response)
+                console.log('postNewCandidat :',response)
+            })
         }
     },
     modules: {
