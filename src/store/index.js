@@ -1,31 +1,43 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+import router from '../router'
 
-const instance = axios.create({
+const urlCandilib = axios.create({
     baseURL: 'https://beta.interieur.gouv.fr/candilib/api/v2'
+})
+
+const urlCandizy = axios.create({
+    baseURL: 'http://localhost:3000'
 })
 
 export default createStore({
     state: {
         api: {
-            url: instance
+            urlCandilib: urlCandilib,
+            urlCandizy: urlCandizy,
         },
         user: {
             id: -1,
-            token: '',
-            firstName: '',
-            lastName: '',
+            tokenCandilib: '',
+            tokenCandizy: '',
+            nomNaissance: '',
+            prenom: '',
             email: '',
-            address: '',
-            mobile: '',
+            adresse: '',
+            portable: '',
+            departement: '',
+            codeNeph: ''
         },
         data: {
             departements : []
         }
     },
     getters: {
-        gettersDepartement (state) {
+        gettersDepartements (state) {
             return state.data.departements
+        },
+        gettersUserInfos (state) {
+            return state.user
         }
     },
     mutations: {
@@ -35,11 +47,20 @@ export default createStore({
         },
         setInfoUser(state, response){
             console.log('setInfoUser :', response)
+            state.user.id = response.userId
+            state.user.tokenCandizy = response.token
+            state.user.nomNaissance = response.nomNaissance
+            state.user.prenom = response.prenom
+            state.user.email = response.email
+            state.user.portable = response.portable
+            state.user.codeNeph = response.codeNeph
+            state.user.departement = response.departement
+            console.log(state.user)
         },
     },
     actions: {
         async getDepartement({ commit }) {
-        await this.state.api.url
+        await this.state.api.urlCandilib
             .get('/public/departements')
             .then((response) => {
                 commit('setDepartement', response)
@@ -47,14 +68,31 @@ export default createStore({
             })
             .catch((error) => console.error(error))
         },
-        async postNewCandidat({ commit }, candidat) {
-            await this.state.api.url
-            .post('/candidat/preinscription', candidat)
+        async registerNewCandidat({ dispatch }, candidat) {
+            await this.state.api.urlCandizy
+            .post('/api/auth/signup', candidat)
             .then((response) => {
-                commit('setInfoUser', response)
-                console.log('postNewCandidat :',response)
+                dispatch('loginCandidat', candidat)
+                console.log('registerNewCandidat :', response.data.data)
             })
-        }
+        },
+        async loginCandidat({ commit }, candidat) {
+            await this.state.api.urlCandizy
+            .post('/api/auth/login', candidat)
+            .then((response) => {
+                commit('setInfoUser', response.data.data)
+                router.push('/space')
+                console.log('loginCandidat :', response.data.data)
+            })
+        },
+        // async registerNewCandidat({ commit }, candidat) {
+        //     await this.state.api.urlCandilib
+        //     .post('/candidat/preinscription', candidat)
+        //     .then((response) => {
+        //         commit('setInfoUser', response)
+        //         console.log('postNewCandidat :',response)
+        //     })
+        // }
     },
     modules: {
     }

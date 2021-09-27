@@ -21,7 +21,19 @@
                 </div>
             </div>
             <div class="form-group row my-2">
-                <label for="email" class="col-sm-3 col-form-label text-start">Courriel : </label>
+                <label for="password" class="col-sm-3 col-form-label text-start">Mot de passe : </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="password" name="password" id="password" placeholder="Mot de passe" v-model="password">
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label for="passwordCheck" class="col-sm-3 col-form-label text-start">Mot de passe: </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="password" name="passwordCheck" id="passwordCheck" placeholder="Confirmation du mot de passe" v-model="passwordCheck">
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label for="email" class="col-sm-3 col-form-label text-start">E-mail : </label>
                 <div class="col-sm-9">
                     <input class="form-control" type="mail" name="email" id="email" placeholder="jean.dupond@gmail.com" v-model="email">
                 </div>
@@ -38,9 +50,15 @@
                     <input class="form-control" type="text" name="departement" id="departement" placeholder="26" v-model="departement">
                 </div>
             </div>
-            <button :class="{ 'disabled' : !validateFields }" class="btn btn-primary mx-4" type="submit" @click.prevent="registerCandidat">Valider le formulaire</button>
+            <button :class="{ 'disabled' : !validateFields }" class="btn btn-primary mx-4" type="submit" @click.prevent="registerCandidat">Envoyer le formulaire</button>
             <button class="btn btn-primary" type="reset">Effacer le formulaire</button>
         </form>
+        {{ firstName +' '+ lastName }}
+        {{ password +' '+ passwordCheck }}
+        {{ neph }}
+        {{ email +' '+ mobile }}
+        {{ departement }}
+        {{ validateFields }}
     </div>
 </template>
 
@@ -51,15 +69,18 @@ export default {
     name: 'Register',
     data () {
         return {
-            neph: '',
-            firstName: '',
             lastName: '',
+            firstName: '',
+            password: '',
+            passwordCheck: '',
+            neph: '',
             email: '',
             mobile: '',
             departement: '',
+            regexNom: /^[a-zA-z]{2,20}$/,
+            regexPassword: /[\w.-]{8,16}/,
             regexNeph: /^[a-zA-Z0-9]{9,15}$/,
             regexEmail: /[\w.-]+@[\w-]+\.\w{3,6}/,
-            regexNom: /^[a-zA-z]{2,20}$/,
             regexTel: /^[0-9]{10}$/,
             regexText: /[0-9a-zA-Z éèêàêôûùïî-]{5,50}$/,
             regexVille: /[0-9a-zA-Z éèêàêôûùïî-]{2,50}$/,
@@ -69,13 +90,13 @@ export default {
         }
     },
     created(){
-        if(this.gettersDepartements != []){
+        if(this.$store.state.data.departements.length == 0){
             this.$store.dispatch('getDepartement')
         }
     },
     computed: {
         validateFields() {
-            if(this.regexNeph.test(this.neph) && this.regexNom.test(this.firstName) && this.regexNom.test(this.lastName) && this.regexEmail.test(this.email)  && this.regexTel.test(this.mobile) && this.regexDepartement.test(this.departement)){
+            if((this.regexNeph.test(this.neph) && this.regexNom.test(this.firstName) && this.regexNom.test(this.lastName) && this.regexPassword.test(this.password) && this.regexEmail.test(this.email)  && this.regexTel.test(this.mobile) && this.regexDepartement.test(this.departement)) && this.password === this.passwordCheck){
                 return true
             } else {
                 return false
@@ -86,15 +107,15 @@ export default {
     methods: {
         registerCandidat(){
             let candidat = {
+                nomNaissance: this.lastName,
+                prenom: this.firstName,
+                password: this.password,
                 codeNeph: this.neph,
                 email: this.email,
-                nomNaissance: this.lastName,
                 portable: this.mobile,
-                prenom: this.firstName,
                 departement: this.departement
             }
-            this.$store.dispatch('postNewCandidat', candidat)
-            console.log(candidat)
+            this.$store.dispatch('registerNewCandidat', candidat)
         }
     }
 }
