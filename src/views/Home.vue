@@ -3,7 +3,7 @@
     <h1>KESAKO</h1>
     <div class="container">
         <p>
-        CANDIZI se charge de réserver votre place d'examen sur le site CANDILIB et cela gratuitement !
+        CANDIZI se charge de réserver votre place d'examen sur le site CANDILIB
         </p>
         <p class="text-start">
         Descritpion du projet ... <br>
