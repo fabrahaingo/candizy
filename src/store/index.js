@@ -43,6 +43,7 @@ export default createStore({
     mutations: {
         setDepartement(state, response){
             state.data.departements = []
+            state.data.departements = response
             console.log('setDepartement :',response)
         },
         setInfoUser(state, response){
@@ -60,11 +61,11 @@ export default createStore({
     },
     actions: {
         async getDepartement({ commit }) {
-        await this.state.api.urlCandilib
-            .get('/public/departements')
+        await this.state.api.urlCandizy
+            .get('/api/candilib/departements')
             .then((response) => {
-                commit('setDepartement', response)
-                console.log('getDepartement :',response)
+                commit('setDepartement', response.data.departements.departementsId)
+                console.log('getDepartement :',response.data.departements.departementsId)
             })
             .catch((error) => console.error(error))
         },

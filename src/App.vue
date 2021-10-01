@@ -1,7 +1,6 @@
 <template>
   <div id="nav">
     <router-link to="/">Accueil</router-link> |
-    <router-link to="/register" v-if="userInfos.id == -1">Inscription</router-link><span v-if="userInfos.id == -1"> | </span>
     <router-link to="/login" v-if="userInfos.id == -1">Connexion</router-link><span v-if="userInfos.id == -1"> | </span> 
     <router-link to="/space" v-if="userInfos.id != -1">Mon espace</router-link> 
   </div>
