@@ -91,7 +91,6 @@
             <button :class="{ 'disabled' : !validateFields }" class="btn btn-primary mx-4" type="submit" @click.prevent="loginCandidat" v-else>Connexion</button>
             <button class="btn btn-primary" type="reset">Effacer le formulaire</button>
         </form>
-
     </div>
 </template>
 
@@ -165,7 +164,7 @@ export default {
                 codeNeph: this.neph,
                 email: this.email,
                 portable: this.mobile,
-                departement: this.departement
+                departement: this.departement,
             }
             this.$store.dispatch('registerNewCandidat', candidat)
         },
@@ -175,7 +174,6 @@ export default {
                 email: this.email,
             }
             this.$store.dispatch('loginCandidat', candidat)
-            console.log('loginCandidat :', candidat)
         }
     }
 

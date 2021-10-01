@@ -2,10 +2,6 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import router from '../router'
 
-const urlCandilib = axios.create({
-    baseURL: 'https://beta.interieur.gouv.fr/candilib/api/v2'
-})
-
 const urlCandizy = axios.create({
     baseURL: 'http://localhost:3000'
 })
@@ -13,7 +9,6 @@ const urlCandizy = axios.create({
 export default createStore({
     state: {
         api: {
-            urlCandilib: urlCandilib,
             urlCandizy: urlCandizy,
         },
         user: {
@@ -26,7 +21,8 @@ export default createStore({
             adresse: '',
             portable: '',
             departement: '',
-            codeNeph: ''
+            codeNeph: '',
+            preInscription: ''
         },
         data: {
             departements : []
@@ -56,6 +52,8 @@ export default createStore({
             state.user.portable = response.portable
             state.user.codeNeph = response.codeNeph
             state.user.departement = response.departement
+            state.user.preInscription = response.preInscription
+            urlCandizy.defaults.headers.common["Authorization"] = "Bearen " + response.token
             console.log(state.user)
         },
     },
@@ -86,14 +84,15 @@ export default createStore({
                 console.log('loginCandidat :', response.data.data)
             })
         },
-        // async registerNewCandidat({ commit }, candidat) {
-        //     await this.state.api.urlCandilib
-        //     .post('/candidat/preinscription', candidat)
-        //     .then((response) => {
-        //         commit('setInfoUser', response)
-        //         console.log('postNewCandidat :',response)
-        //     })
-        // }
+        async preInscriptionCandidat({ commit }, candidat) {
+            await this.state.api.urlCandizy
+            .post('/api/candilib/pre-inscription', candidat)
+            .then((response) => {
+                commit('setPreInscriptionCandidat', response)
+                console.log('setPreInscriptionCandidat :', response)
+            })
+
+        }
     },
     modules: {
     }
