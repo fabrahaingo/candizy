@@ -1,7 +1,7 @@
-const User = require("../models/User");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-var Cryptr = require('cryptr');
+const User = require("../models/User")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+var Cryptr = require('cryptr')
 
 var cryptr = new Cryptr(process.env.SECRET);
 
@@ -10,26 +10,27 @@ var cryptr = new Cryptr(process.env.SECRET);
 
 exports.signup = (req, res, next) => {
     console.log(req.body)
-  let regexPassword = /[\w.-]{8,16}/
-  if(regexPassword.test(req.body.password)){
+    let regexPassword = /[\w.-]{8,16}/
+    if(regexPassword.test(req.body.password)){
 
-    var emailEncrypted = cryptr.encrypt(req.body.email)
-    
-    console.log('Signup : ' + emailEncrypted)
+        var emailEncrypted = cryptr.encrypt(req.body.email)
 
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-        const user = new User({
-            ...req.body,
-            email: emailEncrypted,
-            password: hash,
-            isAdmin : false
+        console.log('Signup : ' + emailEncrypted)
+
+        bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            const user = new User({
+                ...req.body,
+                email: emailEncrypted,
+                password: hash,
+                preInscription: false,
+                isAdmin : false
+            })
+            user.save()
+                .then((response) => res.status(201).json({ message: 'Utilisateur créé !', data: response }))
+                .catch(error => res.status(400).json({ error }))
         })
-        user.save()
-            .then((response) => res.status(201).json({ message: 'Utilisateur créé !', data: response }))
-            .catch(error => res.status(400).json({ error }))
-    })
-    .catch(error => res.status(500).json({ error }))
+        .catch(error => res.status(500).json({ error }))
   }
   else{
     res.status(400).json({ message: 'Un mot de passe doit contenir 8 caractères au minimum !'})
@@ -63,6 +64,7 @@ exports.login = (req, res, next) => {
                 email: emailDecrypt,
                 portable: element.portable,
                 departement: element.departement,
+                preInscription: element.preInscription,
                 isAdmin: element.isAdmin,
                 token: jwt.sign(
                     { userId: candidat.userId },

@@ -12,6 +12,7 @@ const mongoSanitize = require('express-mongo-sanitize')
 require('dotenv').config()
 //---------- modules routes
 const userRoutes = require("./routes/user");
+const candilibRoutes = require("./routes/candilib");
 
 //---------- Configuration
 
@@ -46,5 +47,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //---------- Routes
 app.use("/api/auth", userRoutes);
+app.use("/api/candilib", candilibRoutes);
 
 module.exports = app;
