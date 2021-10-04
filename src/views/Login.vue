@@ -1,73 +1,62 @@
 <template>
-        <div class="login container">
-        <h1 class="login__title" v-if="mode == 'login'">Connexion</h1>
-        <h1 class="login__title" v-else>Inscription</h1>
-        <p class="login__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="login__action btn btn-primary btn-sm" @click="switchToCreateAccount()">Créer un compte</span></p>
-        <p class="login__subtitle" v-else-if="mode == 'create'">Tu a déjà un compte ? <span class="login__action btn btn-primary btn-sm" @click="switchToLogin()">Se connecter</span></p>
+  <div class="sm:fixed sm:w-full sm:h-full flex justify-center bg-gray-300">
+        <div class="bg-white h-full sm:h-3/4 my-12 rounded-3xl shadow text-gray-700 p-2 sm:p-8">
+            <h1 class="font-extrabold text-3xl mb-6 text-center" v-if="mode == 'login'">
+                Connexion
+            </h1>
+            <h1 class="font-extrabold text-3xl mb-6 text-center" v-else>
+                Inscription
+            </h1>
+            <p class="flex flex-wrap justify-center items-center" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="btn-rounded btn-blue-white transition-500 mt-1 sm:mt-0" @click="switchToCreateAccount()">Créer un compte</span></p>
+            <p class="flex flex-wrap justify-center items-center" v-else-if="mode == 'create'">Tu a déjà un compte ? <span class="btn-rounded btn-blue-white transition-500 mt-1 sm:mt-0" @click="switchToLogin()">Se connecter</span></p>
 
-        <form action="#">
-            <div class="form-group row my-2" v-if="mode == 'create'">
-                <label for="neph" class="col-sm-3 col-form-label text-start">NEPH : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="text" name="neph" id="neph" placeholder="093496239512" v-model="neph"
+            <form class="mt-6" action="#">
+                <div class="flex flex-col sm:flex-row items-start justify-center px-4 mb-1" v-if="mode == 'create'">
+                    <label for="neph" class="label-form-right-gray sm:text-right">NEPH : </label>
+                    <input class="input-form-border-bottom-blue w-full" type="text" name="neph" id="neph" placeholder="093496239512" v-model="neph"
                     @change="validateForm('neph')"/>
                 </div>
-            </div>
-            <div class="form-group row my-2" v-if="mode == 'create'">
-                <label for="lastName" class="col-sm-3 col-form-label text-start">Nom de Naissance : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Dupond" v-model="lastName"
+                <div class="flex flex-col sm:flex-row items-start w-full px-4 mb-1" v-if="mode == 'create'">
+                    <label for="lastName" class="label-form-right-gray sm:text-right">Nom de Naissance : </label>
+                    <input class="input-form-border-bottom-blue w-full" type="text" name="lastName" id="lastName" placeholder="Dupond" v-model="lastName"
                     @change="validateForm('lastName')">
-                </div>
-            </div>
-            <div class="form-group row my-2" v-if="mode == 'create'">
-                <label for="firstName" class="col-sm-3 col-form-label text-start">Prénom : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="text" name="firstName" id="firstName" placeholder="Jean" v-model="firstName"
+                </div>                               
+                <div class="flex flex-col sm:flex-row items-start w-full px-4 mb-1" v-if="mode == 'create'">
+                    <label for="firstName" class="label-form-right-gray sm:text-right">Prénom : </label>
+                    <input class="input-form-border-bottom-blue w-full" type="text" name="firstName" id="firstName" placeholder="Jean" v-model="firstName"
                     @change="validateForm('firstName')">
                 </div>
-            </div>
-            <div class="form-group row my-2">
-                <label for="email" class="col-sm-3 col-form-label text-start">E-mail : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="mail" name="email" id="email" placeholder="jean.dupond@gmail.com" v-model="email"
+                <div class="flex flex-col sm:flex-row items-start w-full px-4 mb-1">
+                    <label for="email" class="label-form-right-gray sm:text-right">E-mail : </label>
+                    <input class="input-form-border-bottom-blue w-full" type="mail" name="email" id="email" placeholder="jean.dupond@gmail.com" v-model="email"
                     @change="validateForm('email')">
                 </div>
-            </div>
-            <div class="form-group row my-2">
-                <label for="password" class="col-sm-3 col-form-label text-start">Mot de passe : </label>
-                <div class="col-sm-9 password-container">
-                    <input class="form-control" type="password" name="password" id="password" placeholder="Mot de passe" v-model="password"
+                <div class="flex flex-col sm:flex-row items-start w-full px-4 mb-1 relative">
+                    <label for="password" class="label-form-right-gray sm:text-right">Mot de passe : </label>
+                    <input class="input-form-border-bottom-blue w-full" type="password" name="password" id="password" placeholder="Mot de passe" v-model="password"
                     @change="validateForm('password')">
-                    <div class="password-icon">
-                        <i class="far fa-eye" @click="displayPassword"></i>
-                        <i class="far fa-eye-slash" @click="displayPassword"></i>
+                    <div class="flex items-center">
+                        <EyeIcon class="eye w-5 cursor-pointer absolute right-3 top-1/2 sm:top-2" @click="displayPassword('eye1')"/>
+                        <EyeOffIcon class="eye-off w-5 cursor-pointer absolute right-3 top-1/2 sm:top-2 hidden" @click="displayPassword('eyeOff1')"/>
                     </div>
-                    
                 </div>
-            </div>
-            <div class="form-group row my-2" v-if="mode == 'create'">
-                <label for="passwordCheck" class="col-sm-3 col-form-label text-start">Mot de passe:</label>
-                <div class="col-sm-9 password-container">
-                    <input class="form-control" type="password" name="passwordCheck" id="passwordCheck" placeholder="Confirmation du mot de passe" v-model="passwordCheck"
+                <div class="flex flex-col sm:flex-row items-start w-full px-4 mb-1 relative" v-if="mode == 'create'">
+                    <label for="passwordCheck" class="label-form-right-gray sm:text-right">Mot de passe:</label>
+                    <input class="input-form-border-bottom-blue w-full" type="password" name="passwordCheck" id="passwordCheck" placeholder="Confirmation du mot de passe" v-model="passwordCheck"
                     @change="validateForm('passwordCheck')">
-                    <div class="password-icon">
-                        <i class="far fa-eye" @click="displayPassword"></i>
-                        <i class="far fa-eye-slash" @click="displayPassword"></i>
+                    <div class="flex items-center">
+                        <EyeIcon class="eye w-5 cursor-pointer absolute right-3 top-1/2 sm:top-2 " @click="displayPassword('eye2')"/>
+                        <EyeOffIcon class="eye-off w-5 cursor-pointer absolute right-3 top-1/2 sm:top-2 hidden" @click="displayPassword('eyeOff2')"/>
                     </div>
                 </div>
-            </div>
-            <div class="form-group row my-2" v-if="mode == 'create'">
-                <label for="mobile" class="col-sm-3 col-form-label text-start">Portable : </label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="tel" name="mobile" id="mobile" placeholder="0601234567" v-model="mobile"
+                <div class="flex flex-col sm:flex-row items-start w-full px-4 mb-1" v-if="mode == 'create'">
+                    <label for="mobile" class="label-form-right-gray sm:text-right">Portable : </label>
+                    <input class="input-form-border-bottom-blue w-full" type="tel" name="mobile" id="mobile" placeholder="0601234567" v-model="mobile"
                     @change="validateForm('mobile')">
                 </div>
-            </div>
-            <div class="form-group row my-2" v-if="mode == 'create'">
-                <label for="departement" class="col-sm-3 col-form-label text-start">Departement : </label>
-                <div class="col-sm-9">
-                    <select v-model="departement" name="departement" id="departement" class="form-control" @change="validateForm('departement')">
+                <div class="flex flex-col sm:flex-row items-start w-full px-4 mb-1" v-if="mode == 'create'">
+                    <label for="departement" class="label-form-right-gray sm:text-right">Departement : </label>
+                    <select v-model="departement" name="departement" id="departement" class="select-form-border-bottom-blue w-full" @change="validateForm('departement')">
                         <option disabled value="">
                             Choisissez votre département
                         </option>
@@ -79,27 +68,34 @@
                                 {{ item }}
                         </option>
                     </select>
-                    {{ lastName }}
-                    {{ firstName }}
-                    {{ password }}
-                    {{ passwordCheck }}
-                    {{  }}
-                    {{ departement }}
-                </div>
             </div>
-            <button :class="{ 'disabled' : !validateFields }" class="btn btn-primary mx-4" type="submit" @click.prevent="registerCandidat" v-if="mode == 'create'">Envoyer le formulaire</button>
-            <button :class="{ 'disabled' : !validateFields }" class="btn btn-primary mx-4" type="submit" @click.prevent="loginCandidat" v-else>Connexion</button>
-            <button class="btn btn-primary" type="reset">Effacer le formulaire</button>
-        </form>
-    </div>
+            <div class="flex justify-center my-8">
+                <button :class="{ 'btn-disabled' : !validateFields }" class="btn-rounded btn-blue-white" type="submit" @click.prevent="registerCandidat" v-if="mode == 'create'">
+                    Envoyer
+                </button>
+                <button :class="{ 'btn-disabled' : !validateFields }" class="btn-rounded btn-blue-white mx-4" type="submit" @click.prevent="loginCandidat" v-else>
+                    Connexion
+                </button>
+                <button class="btn-rounded btn-blue-white" type="reset">
+                    Effacer
+                </button>
+            </div>
+            </form>
+        </div>
+</div>
 </template>
 
 <script>
 import { validateForm, changeClassForm, displayPassword} from '../js/validateForm'
+import { EyeIcon, EyeOffIcon } from '@heroicons/vue/outline'
 import { mapGetters } from 'vuex'
 
 export default {
     name: 'Login',
+    components: {
+        EyeIcon,
+        EyeOffIcon,
+    },
     data(){
         return {
             mode: 'create',
@@ -176,49 +172,7 @@ export default {
             this.$store.dispatch('loginCandidat', candidat)
         }
     }
-
-
-
 }
 </script>
 
-<style lang="scss" scoped>
-
-.login{
-    &__title{
-
-    }
-    &__subtitle{
-
-    }
-    &__action{
-        cursor: pointer;
-    }
-}
-.password-container{
-    position: relative;
-    .password-icon{
-        display: flex;
-        align-items: center;
-        position: absolute;
-        top: 50%;
-        right: 45px;
-        transform: translateY(-50%);
-        width: 30px;
-        height: 30px;
-        transition: all 0.2s;
-        i{
-            width: 100%;
-            height: 100%;
-            padding-top: 6px;
-        }
-        i:hover{
-            cursor: pointer;
-        }
-    }
-}
-
-.fa-eye-slash{
-    display: none;
-}
-</style>
+<style scoped src="../css/style.css"></style>

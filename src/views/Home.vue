@@ -1,28 +1,22 @@
 <template>
-<div class="home">
-    <h1>KESAKO</h1>
-    <div class="container">
-        <p>
-        CANDIZI se charge de réserver votre place d'examen sur le site CANDILIB
-        </p>
-        <p class="text-start">
-        Descritpion du projet ... <br>
-        Blablabla <br>
-        Blablabla
-        </p>
-    </div>
-</div>
+  <div class="container mx-auto">
+        <h1 class="font-extrabold text-3xl mb-6">KESAKO</h1>
+        <div>
+            <p>
+                CANDIZI se charge de réserver votre place d'examen sur le site CANDILIB
+            </p>
+            <p class="">
+                Descritpion du projet ... <br>
+                Blablabla <br>
+                Blablabla
+            </p>
+        </div>
+
+  </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
-
 export default {
   name: 'Home',
-  components: {
-    
-  }
-
 }
 </script>

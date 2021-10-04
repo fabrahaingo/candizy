@@ -11,7 +11,6 @@ function validateForm(inputId){
     let input = document.getElementById(inputId)
     switch(inputId){
         case 'neph':
-            console.log(inputId)
             if (this.regexNeph.test(this.neph)){
                 this.changeClassForm(input, true)
             } else {
@@ -19,7 +18,6 @@ function validateForm(inputId){
             }
             break;
         case 'firstName':
-            console.log(inputId)
             if (this.regexNom.test(this.firstName)){
                 this.changeClassForm(input, true)
             } else {
@@ -27,7 +25,6 @@ function validateForm(inputId){
             }
             break;
         case 'lastName':
-            console.log(inputId)
             if (this.regexNom.test(this.lastName)){
                 this.changeClassForm(input, true)
             } else {
@@ -35,7 +32,6 @@ function validateForm(inputId){
             }
             break;
         case 'email':
-            console.log(inputId)
             if (this.regexEmail.test(this.email)){
                 this.changeClassForm(input, true)
             } else {
@@ -43,7 +39,6 @@ function validateForm(inputId){
             }
             break;
         case 'password':
-            console.log(inputId)
             if (this.regexPassword.test(this.password)){
                 this.changeClassForm(input, true)
             } else {
@@ -51,7 +46,6 @@ function validateForm(inputId){
             }
             break;
         case 'passwordCheck':
-            console.log(inputId)
             if (this.password == this.passwordCheck){
                 this.changeClassForm(input, true)
             } else {
@@ -59,7 +53,6 @@ function validateForm(inputId){
             }
             break;
         case 'mobile':
-            console.log(inputId)
             if (this.regexTel.test(this.mobile)){
                 this.changeClassForm(input, true)
             } else {
@@ -67,7 +60,6 @@ function validateForm(inputId){
             }
             break;
         case 'departement':
-            console.log(inputId)
             if (this.departement){
                 this.changeClassForm(input, true)
             } else {
@@ -78,27 +70,42 @@ function validateForm(inputId){
             console.log('erreur switch form')
     }
 }
-function displayPassword(){
-    const eye = document.querySelectorAll('.fa-eye')
-    const eyeOff = document.querySelectorAll('.fa-eye-slash')
-    const passwordField = document.querySelectorAll('input[type=password]')
-    
-    for(let i = 0; i < eye.length; i++){
-        eye[i].addEventListener("click", () => {
-            eye[i].style.display = "none"
-            eyeOff[i].style.display = "block"
-            passwordField[i].type = 'text' 
-            console.log(passwordField[i].type)
-        })
+function displayPassword(id){
+    const eye = document.querySelectorAll('.eye')
+    const eyeOff = document.querySelectorAll('.eye-off')
+    let passwordField = ''
+    if(id == 'eye1' || id == 'eyeOff1'){
+        passwordField = document.getElementById('password')
+    } else if(id == 'eye2' || id == 'eyeOff2') {
+        passwordField = document.getElementById('passwordCheck')
+    } else {
+        return console.log('erreur id displayPassword')
     }
-    for(let i = 0; i < eyeOff.length; i++){
-        eyeOff[i].addEventListener("click", () => {
-            eyeOff[i].style.display = "none";
-            eye[i].style.display = "block";
-            passwordField[i].type = 'password' 
-            console.log(passwordField[i].type)
-        })
-    }      
+
+    switch(id){
+        case 'eye1':
+            eye[0].style.display = "none"
+            eyeOff[0].style.display = "block"
+            passwordField.type = 'text'
+            break;
+        case 'eyeOff1':
+            eye[0].style.display = "block"
+            eyeOff[0].style.display = "none"
+            passwordField.type = 'password'
+            break;
+        case 'eye2':
+            eye[1].style.display = "none"
+            eyeOff[1].style.display = "block"
+            passwordField.type = 'text'
+            break;
+        case 'eyeOff2':
+            eye[1].style.display = "block"
+            eyeOff[1].style.display = "none"
+            passwordField.type = 'password'
+            break;
+        default:
+            console.log('erreur switch displayPassword')
+    }    
 }
 module.exports = {
     changeClassForm,

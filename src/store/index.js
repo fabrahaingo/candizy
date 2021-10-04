@@ -94,7 +94,5 @@ export default createStore({
 
         }
     },
-    modules: {
-    }
 })
 
