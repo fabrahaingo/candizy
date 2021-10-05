@@ -1,56 +1,59 @@
 <template>
-    <div class="space container">
-        <h1>Mon Espace</h1>
-        <h2>
+    <div class="bg-white flex flex-col justify-center items-center p-2 my-12 sm:max-w-screen-md sm:mx-auto sm:rounded-3xl sm:shadow">
+        <h1 class="w-full text-center text-3xl font-extrabold">Mon Espace</h1>
+        <h2 class="w-full text-start font-bold mb-2">
             Mes données personnelles
         </h2>
-        <hr>
-        <div class="row space__infos">
-            <div class="space__infos__field col-3">
-            <p>Nom de naissance :</p>
+        <div class="w-full flex flex-wrap">
+            <div class="w-1/3 text-right font-bold text-gray-600">
+            <p>Nom :</p>
             <p>Prénom :</p>
             <p>Code NEPH :</p>
             </div>
-            <div class="space__infos__value col-3">
-            <p> {{ userInfos.nomNaissance }}</p>
-            <p> {{ userInfos.prenom }}</p>
-            <p> {{ userInfos.codeNeph }}</p>
+            <div class="w-2/3 pl-2">
+            <p class="border-b border-gray-400"> {{ userInfos.nomNaissance }}</p>
+            <p class="border-b border-gray-400"> {{ userInfos.prenom }}</p>
+            <p class="border-b border-gray-400"> {{ userInfos.codeNeph }}</p>
             </div>
-            <div class="space__infos__field col-3">
+            <div class="w-1/3 text-right font-bold text-gray-600">
             <p>E-mail :</p>
             <p>Mobile :</p>
             <p>Departement :</p>
             </div>
-            <div class="space__infos__value col-3">
-            <p> {{ userInfos.email }}</p>
-            <p> {{ userInfos.portable }}</p>
-            <p> {{ userInfos.departement }}</p>
+            <div class="w-2/3 pl-2">
+            <p class="border-b border-gray-400"> {{ userInfos.email }}</p>
+            <p class="border-b border-gray-400"> {{ userInfos.portable }}</p>
+            <p class="border-b border-gray-400"> {{ userInfos.departement }}</p>
             </div>
-            <hr>
         </div>
-        <div class="row space__check alert alert-danger">
+        <div class="important-orange flex justify-start items-center my-4">
+            <ExclamationIcon class="w-20 sm:w-16 mr-2" />
             <p>Veuillez vérifier vos informations ci-dessus avant de réaliser la préinscription sur Candilib</p>
         </div>
-        <div class="space__pre-inscription" v-if="!gettersUserInfos.preInscription">
-            <h3>
+        <div class="w-full flex flex-col" v-if="!gettersUserInfos.preInscription">
+            <h3 class="w-full text-start font-bold mb-2">
                 Pré-inscription sur Candilib
             </h3>
             <p>
                 Cliquez ici pour vous pré-inscrire sur Candilib :
             </p>
-            <button class="btn btn-primary" @click="preInscription">Pré-Inscription</button>
+            <button class="btn-rounded btn-blue-white mt-2 w-40 self-center" @click="preInscription">Pré-Inscription</button>
         </div>
-        <div class="jumbotron">
+        <div class="w-full break-words">
         {{ userInfos }}
         </div>
     </div>
 </template>
 
 <script>
+import { ExclamationIcon } from '@heroicons/vue/outline' 
 import { mapGetters } from 'vuex'
 
 export default {
     name: 'Space',
+    components: {
+        ExclamationIcon,
+    },
     data() {
         return {
             userInfos: {},
@@ -72,44 +75,4 @@ export default {
 
 }
 </script>
-
-<style lang="scss" scoped>
-
-.space{
-    &__infos{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        p{
-            text-align: left;
-        }
-        &__field{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-        &__value{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-    }
-    &__pre-inscription{
-        display: flex;
-        justify-content: center;
-        align-items: baseline;
-        flex-wrap: wrap;
-        h3{
-            width: 100%;
-        }
-        button{
-            margin-left: 5%;
-        }                                                                       
-    }
-}
-
-.col-3{
-    //border: 1px solid black;
-}
-    
-</style>
+<style scoped src="../css/style.css"></style>
