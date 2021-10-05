@@ -71,9 +71,20 @@ export default createStore({
             await this.state.api.urlCandizy
             .post('/api/auth/signup', candidat)
             .then((response) => {
-                dispatch('loginCandidat', candidat)
-                console.log('registerNewCandidat :', response.data.data)
+                if(response.data.data.status == 400 ){
+                    console.log(response.data.data)
+                } else if(response.data.data.status == 401){
+                    document.getElementById('errorEmail').classList.remove('opacity-0')
+                    setTimeout(function(){
+                        document.getElementById('errorEmail').classList.add('opacity-0')
+                    },5000)
+                    console.log(response.data.data)
+                } else {
+                    dispatch('loginCandidat', candidat)
+                    console.log('registerNewCandidat :', response.data.data)
+                }
             })
+            .catch(error => console.log(error))
         },
         async loginCandidat({ commit }, candidat) {
             await this.state.api.urlCandizy
@@ -82,6 +93,13 @@ export default createStore({
                 commit('setInfoUser', response.data.data)
                 router.push('/space')
                 console.log('loginCandidat :', response.data.data)
+            })
+            .catch(error => {
+                document.getElementById('errorLogin').classList.remove('opacity-0')
+                setTimeout(function(){
+                    document.getElementById('errorLogin').classList.add('opacity-0')
+                },5000)
+                console.log(error)
             })
         },
         async preInscriptionCandidat({ commit }, candidat) {

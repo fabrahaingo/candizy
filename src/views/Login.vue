@@ -69,7 +69,7 @@
                         </option>
                     </select>
             </div>
-            <div class="flex justify-center my-8">
+            <div class="flex justify-center mt-8">
                 <button :class="{ 'btn-disabled' : !validateFields }" class="btn-rounded btn-blue-white" type="submit" @click.prevent="registerCandidat" v-if="mode == 'create'">
                     Envoyer
                 </button>
@@ -81,13 +81,29 @@
                 </button>
             </div>
             </form>
+            <div id="errorLogin" v-if="mode != 'create'"
+            class="alert-red flex my-4 opacity-0 transition-all duration-500">
+                <ExclamationCircleIcon class="w-10 mr-4" />
+                <p>
+                    L'utilisateur n'a pas été trouvé.<br/>
+                    Vérifiez le mail et/ou le mot de passe.<br/>
+                    Etes vous déjà inscrit ?
+                </p>
+            </div>
+            <div id="errorEmail" v-if="mode == 'create'" class="alert-red flex my-4 opacity-0 transition-all duration-500">
+                <ExclamationCircleIcon class="w-10 mr-4" />
+                <p>
+                    L'email est déjà enregistré.<br/>
+                    Veuillez vous connecter
+                </p>
+            </div>
         </div>
 </div>
 </template>
 
 <script>
 import { validateForm, changeClassForm, displayPassword} from '../js/validateForm'
-import { EyeIcon, EyeOffIcon } from '@heroicons/vue/outline'
+import { EyeIcon, EyeOffIcon, ExclamationCircleIcon } from '@heroicons/vue/outline'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -95,6 +111,7 @@ export default {
     components: {
         EyeIcon,
         EyeOffIcon,
+        ExclamationCircleIcon,
     },
     data(){
         return {

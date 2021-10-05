@@ -42,3 +42,7 @@
 .important-orange{
     @apply bg-yellow-500 bg-opacity-40 border border-yellow-500 rounded p-2 text-yellow-700;
 }
+
+.alert-red{
+    @apply bg-red-500 bg-opacity-40 border border-red-500 rounded p-2;
+}

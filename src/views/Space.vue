@@ -30,7 +30,7 @@
             <ExclamationIcon class="w-20 sm:w-16 mr-2" />
             <p>Veuillez vérifier vos informations ci-dessus avant de réaliser la préinscription sur Candilib</p>
         </div>
-        <div class="w-full flex flex-col" v-if="!gettersUserInfos.preInscription">
+        <div class="w-full flex flex-col my-4" v-if="!gettersUserInfos.preInscription">
             <h3 class="w-full text-start font-bold mb-2">
                 Pré-inscription sur Candilib
             </h3>
