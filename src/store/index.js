@@ -56,6 +56,20 @@ export default createStore({
             urlCandizy.defaults.headers.common["Authorization"] = "Bearen " + response.token
             console.log(state.user)
         },
+        setLogout(state){
+            state.user.id = -1
+            state.user.tokenCandizy = ''
+            state.user.nomNaissance = ''
+            state.user.prenom = ''
+            state.user.email = ''
+            state.user.portable = ''
+            state.user.codeNeph = ''
+            state.user.departement = ''
+            state.user.preInscription = ''
+            urlCandizy.defaults.headers.common["Authorization"] = ''
+            router.push('/')
+            console.log(state.user)
+        }
     },
     actions: {
         async getDepartement({ commit }) {
@@ -101,6 +115,9 @@ export default createStore({
                 },5000)
                 console.log(error)
             })
+        },
+        logout({ commit }){
+            commit('setLogout')
         },
         async preInscriptionCandidat({ commit }, candidat) {
             await this.state.api.urlCandizy

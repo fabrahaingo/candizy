@@ -7,23 +7,24 @@
                 <span class="text-red-500">ZY</span>
             </h1>
         </div>
-        <div class="absolute top-1 right-1 w-20 h-full flex justify-center items-center">
+        <div class="absolute top-1 right-1 w-30 h-full flex justify-center items-center">
             <router-link to="/">
             <HomeIcon class="w-8 text-white mr-2"/>
             </router-link>
             <router-link to="/login" v-if="gettersUserInfos.id == -1">
-            <LoginIcon class="w-8 text-white mr-0"/>
+            <LoginIcon class="w-8 text-white mr-2"/>
             </router-link>
             <router-link to="/space" v-else>
-            <UserCircleIcon class="w-8 text-white mr-0"/>
+            <UserCircleIcon class="w-8 text-white mr-2"/>
             </router-link>
+            <LogoutIcon class="w-8 text-white mr-0 cursor-pointer" @click="logout" v-if="gettersUserInfos.id != -1"/>
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { HomeIcon, LoginIcon, UserCircleIcon } from '@heroicons/vue/outline'
+import { HomeIcon, LoginIcon, UserCircleIcon, LogoutIcon } from '@heroicons/vue/outline'
 
 export default {
     name: 'Header',
@@ -31,9 +32,19 @@ export default {
         HomeIcon,
         LoginIcon,
         UserCircleIcon,
+        LogoutIcon,
     },
     computed:{
         ...mapGetters(['gettersUserInfos'])
     },
+    methods:{
+        logout() {
+            if(confirm('Etes-vous certains de vouloir vous déconnecter ?')){
+                this.$store.dispatch('logout')
+            } else {
+                return
+            }
+        }
+    }
 }
 </script>
